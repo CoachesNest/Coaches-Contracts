@@ -11,6 +11,7 @@ These contracts are written using **Soroban** and deployed on the **Stellar netw
 - Payment Release Logic
 - Reputation & Rating Registry
 - Platform Fee Management
+- Session Completion Gate
 
 ## 🛠 Tech Stack
 
@@ -58,19 +59,25 @@ stellar contract build
 
 ```
 contracts/
-├── Cargo.toml           # workspace or contract top-level (if multiple modules)
+├── session_gate/           # Session completion gate contract
+│   ├── src/
+│   │   └── lib.rs          # SessionGate contract implementation
+│   ├── Cargo.toml          # Contract dependencies
+│   ├── README.md           # Contract documentation
+│   └── .env.example        # Environment configuration template
+├── Cargo.toml              # workspace or contract top-level (if multiple modules)
 ├── src/
-│   ├── lib.rs           # main ink! contract entry (Coaches)
-│   ├── modules/         # modular contract components (separate Rust modules)
+│   ├── lib.rs              # main ink! contract entry (Coaches)
+│   ├── modules/            # modular contract components (separate Rust modules)
 │   │   ├── user.rs
 │   │   ├── escrow.rs
 │   │   ├── reputation.rs
 │   │   └── dispute.rs
 │   └── utils.rs
 ├── tests/
-│   └── unit_tests.rs    # Rust unit tests (ink! off-chain tests)
-├── README.md            # This file
-└── .env.example         # Environment / deployment template (RPC endpoints, accounts)
+│   └── unit_tests.rs       # Rust unit tests (ink! off-chain tests)
+├── README.md               # This file
+└── .env.example            # Environment / deployment template (RPC endpoints, accounts)
 
 ```
 
