@@ -1,6 +1,8 @@
 ## Coaches Contracts 🔗
 *Soroban smart contracts for the Coaches platform*
 
+![CI](https://github.com/CoachesNest/Coaches-Contractss/workflows/CI/badge.svg)
+
 ## 📌 About
 **Coaches Contracts** contains the smart contracts that power decentralized mentorship agreements on Coaches.
 
@@ -13,7 +15,19 @@ These contracts are written using **Soroban** and deployed on the **Stellar netw
 - Platform Fee Management
 - Session Completion Gate
 
-## 🛠 Tech Stack
+## � CI/CD
+
+This project uses GitHub Actions for continuous integration. The CI pipeline runs on every push and pull request to the `main` branch and includes:
+
+- **Code formatting check** (`cargo fmt --all -- --check`)
+- **Linting** (`cargo clippy --all-targets --all-features -- -D warnings`)
+- **Testing** (`cargo test --all --locked`)
+- **Native build** (`cargo build --release --locked`)
+- **WASM build** (`cargo build -p coaches-core --target wasm32-unknown-unknown --release --locked`)
+
+The CI status is displayed in the badge at the top of this README. Failing formatting, linting, or tests will block merges.
+
+## �🛠 Tech Stack
 
 - Rust
 - Soroban SDK
@@ -166,6 +180,9 @@ cargo run -p coaches-tools -- build --profile release
 
 ```
 Coaches_Contracts/
+├── .github/
+│   └── workflows/
+│       └── ci.yml          # GitHub Actions CI configuration
 ├── Cargo.toml              # Workspace configuration
 ├── rust-toolchain.toml     # Pinned Rust toolchain and targets
 ├── Makefile                # Development automation commands
