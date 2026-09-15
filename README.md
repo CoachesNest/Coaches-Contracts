@@ -1,227 +1,59 @@
-## Coaches Contracts 🔗
-*Soroban smart contracts for the Coaches platform*
+# Coaches — Smart Contracts
 
-![CI](https://github.com/CoachesNest/Coaches-Contractss/workflows/CI/badge.svg)
+Soroban smart contracts for the **Coaches** mentorship platform, built on the Stellar network with the Soroban SDK.
 
-## 📌 About
-**Coaches Contracts** contains the smart contracts that power decentralized mentorship agreements on Coaches.
+## Overview
 
-These contracts are written using **Soroban** and deployed on the **Stellar network**, enabling trustless escrow, payments, and reputation tracking.
+These contracts power the on-chain logic for the Coaches mentorship platform, including membership, verification, and platform operations. The workspace is built with Rust and targets `wasm32-unknown-unknown` for deployment to the Stellar network.
 
-## ⚙️ Core Contracts
-- Mentorship Escrow Contract
-- Payment Release Logic
-- Reputation & Rating Registry
-- Platform Fee Management
-- Session Completion Gate
+## Repository Layout
 
-## � CI/CD
+```
+crates/
+  contracts/
+    core/        Core Soroban contract crate
+soroban.toml     Network profiles (testnet / mainnet) and configuration
+Makefile         Development and build automation
+```
 
-This project uses GitHub Actions for continuous integration. The CI pipeline runs on every push and pull request to the `main` branch and includes:
+## Prerequisites
 
-- **Code formatting check** (`cargo fmt --all -- --check`)
-- **Linting** (`cargo clippy --all-targets --all-features -- -D warnings`)
-- **Testing** (`cargo test --all --locked`)
-- **Native build** (`cargo build --release --locked`)
-- **WASM build** (`cargo build -p coaches-core --target wasm32-unknown-unknown --release --locked`)
+- [Rust](https://rustup.rs/) with the `wasm32-unknown-unknown` target
+- [Soroban CLI](https://soroban.stellar.org/docs/getting-started/setup)
 
-The CI status is displayed in the badge at the top of this README. Failing formatting, linting, or tests will block merges.
+Install all dependencies automatically:
 
-## �🛠 Tech Stack
-
-- Rust
-- Soroban SDK
-- Stellar CLI
-
-## ⚙️ Developer Environment Setup
-
-### Quick Start (Recommended)
 ```bash
-# Install all dependencies automatically
 make install-deps
-
-# Verify installation
-make check-deps
-
-# Build the project
-make wasm
 ```
 
-### Manual Setup
-
-#### 1. Install Rust Toolchain
-The project uses `rust-toolchain.toml` to pin the stable Rust version and required components:
+## Development
 
 ```bash
-# Install Rust (if not already installed)
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-
-# The project will automatically use the pinned toolchain
-rustup toolchain install stable
-rustup target add wasm32-unknown-unknown
-rustup component add rustfmt clippy
-```
-
-#### 2. Install Soroban CLI
-```bash
-# Install Soroban CLI via cargo
-cargo install soroban-cli
-
-# Verify installation
-soroban --version
-```
-
-#### 3. Verify Setup
-```bash
-# Check all dependencies are installed
-make check-deps
-
-# Test build
-make wasm
-```
-
-### Development Commands
-
-The project includes a Makefile with common development tasks:
-
-```bash
-# Install all dependencies
-make install-deps
-
-# Check if dependencies are installed
-make check-deps
-
-# Build all workspace members
+# Build the workspace
 make build
 
-# Build contract for WASM target
+# Build the contract as a WASM artifact
 make wasm
 
-# Run all tests
+# Run the test suite
 make test
 
-# Format code
+# Format and lint
 make fmt
-
-# Run lints
 make lint
-
-# Clean build artifacts
-make clean
-
-# Show help
-make help
 ```
 
-### Prerequisites
-- Rust (automatically managed by rust-toolchain.toml)
-- Soroban CLI (installed via make install-deps)
-- Make (for using the Makefile commands)
+## Network Configuration
 
-## ⚙️ Setup & Deployment
+Networks are managed through `soroban.toml`, which defines profiles for `testnet` and `mainnet`. Select a profile with the `SOROBAN_NETWORK` environment variable:
 
-### Prerequisites
-- Rust
-- Stellar CLI
-- Stellar Testnet Account
-
-### Build Contracts
 ```bash
-# Quick build using Makefile (recommended)
-make wasm
-
-# Or use cargo directly
-cargo build -p coaches-core --target wasm32-unknown-unknown --release
-
-# Build all workspace members
-make build
-
-# Build CLI tools only
-cargo build -p coaches-tools --release
+SOROBAN_NETWORK=testnet soroban contract deploy ...
 ```
 
-### Run CLI Tools
-```bash
-# Deploy contract
-cargo run -p coaches-tools -- deploy --network testnet -- wasm target/wasm32-unknown-unknown/release/coaches_core.wasm
+See `SOROBAN.md` / `TEST_IMPLEMENTATION.md` for detailed network and deployment documentation.
 
-# Check configuration
-cargo run -p coaches-tools -- config --validate
+## License
 
-# Build contracts via CLI
-cargo run -p coaches-tools -- build --profile release
-```
-### Installation
-* Install rustup
-* ```
-   curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-   rustup update stable
-   rustup target add wasm32-unknown-unknown
-
-* Install cargo-contract (ink! tool)
-* ```
-   cargo install cargo-contract --vers ^2.0.0
-
-* (Optional) Install cargo-make
-   cargo install cargo-make
-  
-# To run a local dev node:
-```
-   * Get a node for local dev (one-off)
-      git clone https://github.com/paritytech/substrate-contracts-node
-      cd substrate-contracts-node
-      cargo build --release
-   * Run node in a separate terminal:
-      ./target/release/substrate-contracts-node --dev
-
-````
-
-## Project Structure
-
-```
-Coaches_Contracts/
-├── .github/
-│   └── workflows/
-│       └── ci.yml          # GitHub Actions CI configuration
-├── Cargo.toml              # Workspace configuration
-├── rust-toolchain.toml     # Pinned Rust toolchain and targets
-├── Makefile                # Development automation commands
-├── README.md               # This file
-├── .gitignore              # Git ignore patterns
-├── crates/
-│   ├── contracts/
-│   │   └── core/           # Core Soroban contract library
-│   │       ├── Cargo.toml  # Contract dependencies
-│   │       └── src/
-│   │           └── lib.rs  # Main contract implementation
-│   └── tools/              # CLI utilities
-│       ├── Cargo.toml      # Tools dependencies
-│       └── src/
-│           └── main.rs     # CLI entry point
-└── target/                 # Build artifacts (gitignored)
-```
-
-## Workspace Layout
-
-This is a Cargo workspace containing:
-- **crates/contracts/core**: Main Soroban smart contract library
-- **crates/tools**: CLI utilities for deployment and configuration management
-
-
-
-
-
-## DEPLOYMENT
-
-# deploy command (example)
-```
-cargo +stable contract instantiate \
-  --constructor new \
-  --suri "//Alice" \
-  --endowment 1000000000000000 \
-  --salt 0x00 \
-  --manifest-path target/ink/metadata.json \
-  --wasm target/ink/coaches.wasm
-
-
-
+Proprietary — all rights reserved.
